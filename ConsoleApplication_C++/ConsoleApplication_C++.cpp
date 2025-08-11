@@ -399,21 +399,71 @@ private:
 };
 int Apple::count = 0;       // !!! man muss unbedingt eine static Variable definieren!!! f
 
+// 103
+class Gun103
+{
+public:
+	virtual void Shoot() // virtual - damit wir die Funktion überschreiben können(im anderen Projekt)         
+    {          
+		cout << "Gun103::Shoot(PA!)" << endl;
+	}
+};
+
+class SubmachineGun103 : public Gun103      // Vererbung von Gun103 in SubmachineGun103
+{
+public:
+	void Shoot() override // virtual - damit wir die Funktion überschreiben können(im anderen Projekt)         override ist für Compiler, damit er weiß, dass wir die Funktion überschreiben wollen
+    {
+        cout << "SubmachineGun103::Shoot(PA-BA-BA!)" << endl;
+    }
+
+};
+
+class Player103 {
+
+public:
+    void Shoot(Gun103* gun) // wir können hier einen Pointer auf die Klasse Gun103 übergeben
+    {
+        gun->Shoot(); // damit rufen wir die Funktion Shoot() von der Klasse Gun103 auf
+    }
+};
+
+
 int main()
 {
+   //103 Виртуальные методы класса c++.Ключевое слово virtual.Ключевое слово override.ООП.C++ #103
+	//******* wir verwenden virtuelle Methoden um Klassen zu vererben und eine eigene Implementierung(Methode) zu haben
+
+    Gun103 gun;
+    SubmachineGun103 michinegun;
+	//gun.Shoot();    
+
+    Gun103* pnt = &gun;
+    Gun103* pnt2 = &michinegun; 
+
+    //pnt->Shoot();
+
+	Player103 player;
+	player.Shoot(); // wir können hier einen Pointer auf die Klasse Gun103 übergeben
+
+   
+
+
+
+
    // 94 Статические методы класса зачем нужны.Модификатор static.Как влияет.ООП.Для начинающих.Урок #94
-   Apple app;    // zugriff auf einer static Variable, direkt aus einer Klasse! 
+  // Apple app;    // zugriff auf einer static Variable, direkt aus einer Klasse! 
 
-   int val = 16;
+ //  int val = 16;
 
 
-   Apple::SetCount(val);
-   Apple::GetCount();
+  // Apple::SetCount(val);
+  // Apple::GetCount();
 
 
   // app.foo(); 
    
-   return 0;
+   // return 0;
 
 
 
@@ -600,7 +650,7 @@ a.TakeApple(app3);
 
 
 
-        // 58 Приведение типов в стиле с.Явное и неявное преобразование типов.Преобразование типов.С++ Урок #61
+        // 58 Приведение типов в стиле с.Явное и неявное преобразование типов.Преобразование типов.С++ Урок #61 
          /*cout << "Lesson 58" << endl;
          double d = 100.45;
          unsigned int c = 0;
