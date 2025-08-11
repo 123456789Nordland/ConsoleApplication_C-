@@ -427,24 +427,89 @@ public:
         gun->Shoot(); // damit rufen wir die Funktion Shoot() von der Klasse Gun103 auf
     }
 };
+// 98
+class Human98 
+{
+public:
+    string name;
+    virtual void Study()
+    {
+        cout << "virtual" << endl;
+    }
+};
+
+class Student98 : public Human98 
+{
+public:
+    
+    string gruop;
+	 void Study() override
+	{
+		cout << "I'am studying in..." << 707 << endl;
+	}
+};
+
+class Professor98 : public Human98 
+{
+public:
+    
+    string subject;
+
+    void Study() override
+    {
+        cout << "I'am teaching..." << subject << endl;
+    }
+};
+
+class ExtramuralStudent : public Student98
+{
+
+public:
+    void Study() override
+    {
+        cout << "I'am studying extramural..." << endl;
+
+    }
+};
 
 
 int main()
 {
+    //98 Наследование в ООП пример. Что такое наследование. Для чего нужно наследование классов. ООП. C++ #98
+
+	Human98 human;
+    Student98 student;
+    Professor98 prof;
+	ExtramuralStudent extramuralStudent;
+
+    student.name = "Ivan";
+    prof.subject = "Math";
+
+    human.Study();
+    student.Study();
+    prof.Study();
+	extramuralStudent.Study();
+   
+    
+	
+
+    return 0;
+
+
    //103 Виртуальные методы класса c++.Ключевое слово virtual.Ключевое слово override.ООП.C++ #103
 	//******* wir verwenden virtuelle Methoden um Klassen zu vererben und eine eigene Implementierung(Methode) zu haben
 
-    Gun103 gun;
-    SubmachineGun103 michinegun;
+   // Gun103 gun;
+   // SubmachineGun103 michinegun;
 	//gun.Shoot();    
 
-    Gun103* pnt = &gun;
-    Gun103* pnt2 = &michinegun; 
+   // Gun103* pnt = &gun;
+   // Gun103* pnt2 = &michinegun; 
 
     //pnt->Shoot();
 
-	Player103 player;
-	player.Shoot(); // wir können hier einen Pointer auf die Klasse Gun103 übergeben
+	//Player103 player;
+	//player.Shoot(pnt2); // wir können hier einen Pointer auf die Klasse Gun103 übergeben
 
    
 
