@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "UartDriver.h"
+#include "can.h"
 
 using namespace std;
 
@@ -494,7 +494,7 @@ int main()
 	
 
     return 0;
-
+    
 
    //103 Виртуальные методы класса c++.Ключевое слово virtual.Ключевое слово override.ООП.C++ #103
 	//******* wir verwenden virtuelle Methoden um Klassen zu vererben und eine eigene Implementierung(Methode) zu haben
@@ -747,13 +747,14 @@ a.TakeApple(app3);
 
 
          //41 Шаблоны функций. Шаблонные функции c++. template typename. template class. Урок #41
-         //cout << Sum(2, 45.1) << endl;
-        /* double var_2 = Sum(2.4, 14.7);
-         cout << Out(var_2) << endl;*/
+        // cout << Sum(2, 45.1) << endl;
+        //double var_2 = Sum(2.4, 14.7);
+        // cout << Out(var_2) << endl;
 
 
          //46 Указатели c++ что это.Для чего нужны.Указатели c++ разыменование.C++ для начинающих.Урок #46
-          /*int a = 5;
+          /*
+          int a = 5;
 
           int *px = &a;
 

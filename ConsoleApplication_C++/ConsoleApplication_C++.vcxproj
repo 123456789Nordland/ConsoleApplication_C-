@@ -128,10 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleApplication_C++.cpp" />
-    <ClCompile Include="UartDriver.cpp" />
+    <ClCompile Include="can.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UartDriver.h" />
+    <ClInclude Include="can.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,12 +18,12 @@
     <ClCompile Include="ConsoleApplication_C++.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="UartDriver.cpp">
+    <ClCompile Include="can.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UartDriver.h">
+    <ClInclude Include="can.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
