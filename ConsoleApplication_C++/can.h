@@ -19,7 +19,7 @@ public:
 
     const CAN_TxHeaderTypeDef* getTxHeader() const { return &this->TxHeader; }
     virtual void const uint8_t* getTxData() const { return TxData; }          // Zum Schreiben/Lesen 
-    // virtual void fillTxData() {};
+     virtual void fillTxData() {};
 private:
 
     CAN_TxHeaderTypeDef TxHeader;
@@ -35,7 +35,7 @@ class can_msg_HVESSC1_PGN_6912 : can_msg
 {
 public:
 
-    void void const uint8_t* getTxData() const {
+    void  const uint8_t* getTxData() const {
 
         TxData[0] = (HS_HiUBusCnctCmd_Rx1) | (HS_PwrDwnCmd_Rx1 << 2) | (HS_HiUBusAcvIslnTestCmd_Rx1 << 4) | (HS_HiUBusPasIslnTestCmd_Rx1 << 6);
         TxData[1] = (HS_CellBalnCmd_Rx1) | (HS_EnaIntChrgrCmd_Rx1 << 2) | (HS_OperConsent_Rx1 << 4) | (HS_HiUBusHiSideRestrCnctReq_Rx1 << 6);

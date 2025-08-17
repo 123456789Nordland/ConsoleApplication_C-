@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include "can.h"
+#include <array>
+#include <cstdint>
 
 using namespace std;
 
@@ -471,13 +473,82 @@ public:
 
     }
 };
+// #102
+class Base102
+{
+public:
+	Base102()
+	{
+		cout << "Base102 Constructor" << endl;
+	}
+	Base102(int a)
+	{
+		cout << "Base102 Constructor with parameter: " << a << endl;
+	}
+private:
+	int x;
+};
+
+const uint32_t CRC32K9_POLYNOMIAL = 0x6938392D;
+const uint32_t TABLE_SIZE = 256;
+
+constexpr  std::array<uint32_t, 256> crc32k9_init_table()
+{
+    std::array<uint32_t, 256> table{};
+
+    for (uint32_t i = 0; i < 256; i++)
+    {
+        uint32_t crc = i;							// Index
+        for (int j = 0; j < 8; j++) {
+            if (crc & 1) {
+                crc = (crc >> 1) ^ CRC32K9_POLYNOMIAL;
+            }
+            else {
+                crc >>= 1;		// oder Bitverschiebung
+            }
+        }
+        table[i] = crc;
+    }
+    return table;
+	cout << &table << endl;
+}
+
+
+const auto CRC32_TABLE = crc32k9_init_table();
 
 
 int main()
 {
+    uint32_t arr[256];
+    //crc32k9_init_table();
+    //hex:cout << CRC32_TABLE[1] << endl;
+
+    arr[5] = CRC32_TABLE[5];
+    cout << arr[5] << endl;
+
+    //#102  Вызов конструктора базового класса из конструктора класса - наследника.Наследование.ООП C++ #102
+	/*const uint8_t PGN_6912_SDM_SA = 0x21;
+
+	cout << (~PGN_6912_SDM_SA & 0xFF) << endl; // 0x21
+	cout << (PGN_6912_SDM_SA & 0xFF) << endl; // 0x21*/
+
+
+
+
+
+
+
+
+    //#100 Порядок вызова конструкторов при наследовании. Как вызываются конструкторы. ООП C++ Начинающим #100
+
+
+
+
+
+
     //98 Наследование в ООП пример. Что такое наследование. Для чего нужно наследование классов. ООП. C++ #98
 
-	Human98 human;
+	/*Human98 human;
     Student98 student;
     Professor98 prof;
 	ExtramuralStudent extramuralStudent;
@@ -493,7 +564,7 @@ int main()
     
 	
 
-    return 0;
+    return 0;*/
     
 
    //103 Виртуальные методы класса c++.Ключевое слово virtual.Ключевое слово override.ООП.C++ #103
