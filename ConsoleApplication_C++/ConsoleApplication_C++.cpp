@@ -496,15 +496,17 @@ constexpr  std::array<uint32_t, 256> crc32k9_init_table()
 {
     std::array<uint32_t, 256> table{};
 
+
     for (uint32_t i = 0; i < 256; i++)
     {
-        uint32_t crc = i;							// Index
+        uint32_t crc = (i << 24);							// Index
         for (int j = 0; j < 8; j++) {
-            if (crc & 1) {
-                crc = (crc >> 1) ^ CRC32K9_POLYNOMIAL;
+            if((crc & 0x80000000) != 0)
+            {           
+                crc = (crc << 1) ^ CRC32K9_POLYNOMIAL;
             }
             else {
-                crc >>= 1;		// oder Bitverschiebung
+                crc <<= 1;		// oder Bitverschiebung
             }
         }
         table[i] = crc;
@@ -513,8 +515,9 @@ constexpr  std::array<uint32_t, 256> crc32k9_init_table()
 	cout << &table << endl;
 }
 
-
 const auto CRC32_TABLE = crc32k9_init_table();
+
+
 
 
 int main()
@@ -522,9 +525,10 @@ int main()
     uint32_t arr[256];
     //crc32k9_init_table();
     //hex:cout << CRC32_TABLE[1] << endl;
+    uint8_t index = 30;
 
-    arr[5] = CRC32_TABLE[5];
-    cout << arr[5] << endl;
+    arr[index] = CRC32_TABLE[index];
+    cout << arr[index] << endl;
 
     //#102  Вызов конструктора базового класса из конструктора класса - наследника.Наследование.ООП C++ #102
 	/*const uint8_t PGN_6912_SDM_SA = 0x21;
