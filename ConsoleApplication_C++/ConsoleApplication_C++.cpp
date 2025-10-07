@@ -517,26 +517,95 @@ constexpr  std::array<uint32_t, 256> crc32k9_init_table()
 
 const auto CRC32_TABLE = crc32k9_init_table();
 
+void func(int a, int b, bool counter = false) 
+{
+    int c;
+    c = a + b;
+    cout << "func wird aufgerufen" << endl; 
+    if (counter == true) 
+    {
+        static int cnt;
+        cnt++;        
+        cout << "check = true" << endl; 
+        cout <<"result " << cnt << endl;
+    
+    }
+    //return c;
+    
+}
+class CanCounter 
+{
+public:
+    CanCounter(uint8_t cnt) 
+    {
+        counter = cnt;
+    }
 
+    void incCounter()
+    {
+        counter++;
+        if (counter >= 32) { counter = 0; }
 
+    }
+    uint8_t getCounter() const { return counter;}
+
+    void reset() { counter = 0; }
+
+private:
+    uint8_t counter = 0;
+};
+uint8_t func(CanCounter& obj)
+{
+    //obj.incCounter();
+
+    cout << (int)obj.getCounter() << endl;
+    return obj.getCounter();
+
+}
 
 int main()
 {
-    uint32_t arr[256];
-    //crc32k9_init_table();
-    //hex:cout << CRC32_TABLE[1] << endl;
-    uint8_t index = 30;
 
-    arr[index] = CRC32_TABLE[index];
-    cout << arr[index] << endl;
+
+
+
+
+    //
+    // cout << (int*) " H ome of the j o l l y byte s ";
+
+
+
+    /*CanCounter obj1(5);
+    CanCounter obj2(0);
+    obj2 = obj1;
+
+    func(obj1);
+    func(obj2);*/
+
+
+    
+   
+   // cout << (int)func(obj2) << endl;
+    //func(0, 1, true);
+    //func(3, 4);
+    //func(1, 1, true);
+
+
+
+
+    //uint32_t arr[256];
+    //crc32k9_init_table();
+    // std::cout << hex << CRC32_TABLE[1] << endl;
+    //uint8_t index = 30;
+
+    //arr[index] = CRC32_TABLE[index];
+    //cout << arr[index] << endl;
 
     //#102  Вызов конструктора базового класса из конструктора класса - наследника.Наследование.ООП C++ #102
 	/*const uint8_t PGN_6912_SDM_SA = 0x21;
 
 	cout << (~PGN_6912_SDM_SA & 0xFF) << endl; // 0x21
 	cout << (PGN_6912_SDM_SA & 0xFF) << endl; // 0x21*/
-
-
 
 
 
