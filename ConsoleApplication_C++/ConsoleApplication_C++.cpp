@@ -562,10 +562,68 @@ uint8_t func(CanCounter& obj)
     return obj.getCounter();
 
 }
+// 96
+class Pixel {
+public:
+    Pixel() 
+    {
+        r = g = b = 0;
+    }
+
+    Pixel(int r, int g, int b)
+    {
+        this->r = r;
+        this->g = g;
+        this->b = b;
+    }
+
+    string GetInfo()
+    {
+        return "Pixel:  r = " + to_string(r) + " g = " + to_string(g) + " b = " + to_string(b);
+    }
+
+private:
+    int r;
+    int g;
+    int b;
+};
 
 int main()
-{
+{   
+    // Реализация односвязного списка c++ Часть 1 | Урок #133
 
+
+    // Многопоточность | Потоки | thread | Многопоточное программирование | Уроки | C++ #1
+
+
+    // Лямбда-выражения | Лямбда функции | Анонимные функции | Изучение С++ для начинающих. Урок #143
+
+
+    // std::function | Полиморфная обёртка функции | Изучение С++ для начинающих. Урок #142
+
+
+    // 139 Многофайловый проект | Изучение С++ для начинающих. Урок #139
+    // Methoden schreiben wir in der .cpp Datei
+
+
+    // 136 Ключевое слово auto | Изучение С++ для начинающих. Урок #136
+    auto a = 10; 
+    auto b = 32.65;
+    auto c = "string";
+
+    // ***statt constexpr  std::array<uint32_t, 256> crc32k9_init_table() 
+    // können wir einfach auto schreiben!
+
+
+
+
+    // 96 Массив объектов класса. Динамический. Статический. Создание Особенности. ООП C++ Для начинающих #96
+    const int LENGTH = 5; 
+
+    Pixel arr[LENGTH];
+    arr[1] = Pixel(1, 2, 3);
+
+    cout << arr[1].GetInfo() << endl;
 
 
 
