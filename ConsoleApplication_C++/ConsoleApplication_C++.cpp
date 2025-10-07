@@ -6,6 +6,7 @@
 #include "can.h"
 #include <array>
 #include <cstdint>
+#include <functional>
 
 using namespace std;
 
@@ -587,6 +588,23 @@ private:
     int g;
     int b;
 };
+//  Урок #142
+void foo(int a)
+{
+    cout << a%2 << endl;
+    return;
+}
+void foo1(int a)
+{
+    cout << a * 2 << endl;
+    return;
+}
+
+void test_foo(int a, function<void(int)> f)
+{
+    f(a);
+}
+
 
 int main()
 {   
@@ -597,9 +615,25 @@ int main()
 
 
     // Лямбда-выражения | Лямбда функции | Анонимные функции | Изучение С++ для начинающих. Урок #143
+    int val;
+
+    /*[&val](int a)
+        {
+            cout << "ysdsdfsdf" << a << endl;
+            cout << "ysdsdfsdf" << val << endl;
+        }*/
 
 
     // std::function | Полиморфная обёртка функции | Изучение С++ для начинающих. Урок #142
+    // das ist Funktionzeiger aber nur im OOP
+    function<void(int)> f;
+   /* f = foo;
+    f(7);
+    f = foo1;
+    f(7);*/
+    test_foo(7, foo);
+    test_foo(7, foo1);
+
 
 
     // 139 Многофайловый проект | Изучение С++ для начинающих. Урок #139
@@ -607,9 +641,9 @@ int main()
 
 
     // 136 Ключевое слово auto | Изучение С++ для начинающих. Урок #136
-    auto a = 10; 
+   /* auto a = 10;
     auto b = 32.65;
-    auto c = "string";
+    auto c = "string";*/
 
     // ***statt constexpr  std::array<uint32_t, 256> crc32k9_init_table() 
     // können wir einfach auto schreiben!
@@ -618,12 +652,12 @@ int main()
 
 
     // 96 Массив объектов класса. Динамический. Статический. Создание Особенности. ООП C++ Для начинающих #96
-    const int LENGTH = 5; 
+   /* const int LENGTH = 5;
 
     Pixel arr[LENGTH];
     arr[1] = Pixel(1, 2, 3);
 
-    cout << arr[1].GetInfo() << endl;
+    cout << arr[1].GetInfo() << endl;*/
 
 
 
