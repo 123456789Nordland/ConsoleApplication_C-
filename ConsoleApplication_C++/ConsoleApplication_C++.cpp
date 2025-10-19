@@ -7,6 +7,8 @@
 #include <array>
 #include <cstdint>
 #include <functional>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
@@ -563,10 +565,34 @@ uint8_t func(CanCounter& obj)
     return obj.getCounter();
 
 }
-// 96
+
+//  Урок #142
+void foo(int a)
+{
+    cout << a%2 << endl;
+    return;
+}
+void foo1(int a)
+{
+    cout << a * 2 << endl;
+    return;
+}
+
+void test_foo(int a, function<void(int)> f)
+{
+    f(a);
+}
+void DoWork()
+{
+    for (size_t i = 0; i < 10; i++)
+    {
+        cout << "ID thread = " << this_thread::get_id() << "\tDoWork" << i << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
+    }
+}// 96
 class Pixel {
 public:
-    Pixel() 
+    Pixel()
     {
         r = g = b = 0;
     }
@@ -588,34 +614,621 @@ private:
     int g;
     int b;
 };
-//  Урок #142
-void foo(int a)
+
+// 130
+template<typename T>
+class SmartPointer
 {
-    cout << a%2 << endl;
-    return;
+public:
+    SmartPointer(T* ptr)
+    {
+        this->ptr = ptr;
+        cout << "Constructor" << endl;
+    }
+    ~SmartPointer()
+    {
+        delete ptr;
+        cout << "Destructor" << endl;
+    }
+
+    T* get()
+    {
+        return ptr;
+    }
+
+    T& operator*()
+    {
+        return*ptr;
+    }
+
+
+private:
+    T* ptr;
+
+};
+// 105
+class A
+{
+public:
+    A() {
+        cout << "Dynamischer speicher reserviert Objekt A" << endl;
+    }
+    virtual ~A()
+    {
+        cout << "Dynamischer speicher ist frei Objekt A" << endl;
+    }
+
+};
+
+class B : public A
+{
+public:
+    B() {
+        cout << "Dynamischer speicher reserviert Objekt B" << endl;
+    }
+    ~B() override
+    {
+        cout << "Dynamischer speicher ist frei Objekt B" << endl;
+    }
+
+};
+std::array<int, 5 > footest()
+{
+    std::array<int, 5> val{ 0,1,2,3,4 };
+
+    return val;
 }
-void foo1(int a)
+// 113
+// das ist Interface d.h. sind alle Mуthode virtual 
+class IBicycle
 {
-    cout << a * 2 << endl;
-    return;
+public:
+    void virtual TwistTheWheel() = 0;
+    void virtual Ride() = 0;
+};
+
+class SimpleBicycle : public IBicycle
+{
+public:
+    void TwistTheWheel() override
+    {
+        cout << "Methode TwistTheWheel() SimpleBicycle" << endl;
+    }
+    void Ride() override
+    {
+        cout << "Methode Ride() SimpleBicycle" << endl;
+    }
+
+
+};
+
+class SportBicycle : public IBicycle
+{
+public:
+    void TwistTheWheel() override
+    {
+        cout << "Methode TwistTheWheel() SportBicycle" << endl;
+    }
+    void Ride() override
+    {
+        cout << "Methode Ride() SportBicycle" << endl;
+    }
+
+
+};
+
+class Human113
+{
+public:
+    void RideOn(IBicycle& bicycle)
+    {
+        cout << "Lenkrad steuern" << endl;
+        bicycle.TwistTheWheel();
+        cout << "Fahren!" << endl;
+        bicycle.Ride();
+    }
+
+};
+const uint8_t BMS_FAULT_CODE = 1;
+uint8_t storageFaultCode = 0;
+bool StorageReported_hasError = 1;
+
+/////////////////////////*******************************
+// #133 einfach Verkettete Liste
+template<typename T>
+class List
+{
+public:
+    List();
+    ~List();
+
+    void pop_front();   
+    void push_back(T data);
+    void clear();
+    // p3
+    void push_front(T data);
+    void insert(T value, int index);
+    void removeAt(int index);
+    void pop_back();
+    int GetSize()
+    {
+        return Size;
+    }
+
+    T& operator[](const int index);
+
+private:
+
+
+
+    template<typename T>
+    class Node
+    {
+    public:
+        Node* pNext;
+        T data;
+        Node(T data = T(), Node* pNext = nullptr)
+        {
+            this->data = data;
+            this->pNext = pNext;
+        }
+    };
+    int Size;
+    Node<T>* head;
+
+
+
+};
+template<typename T>
+List<T>::List()
+{
+    Size = 0;
+    head = nullptr;
+}
+template<typename T>
+List<T>::~List()
+{
+    // cout << "das war's" << endl;
+}
+template<typename T>
+void List<T>::pop_front()
+{
+    Node<T>* temp = head;
+
+    head = head->pNext;
+    delete temp;
+
+    Size--;
+
+}
+template<typename T>
+void List<T>::push_back(T data)
+{
+    if (head == nullptr)
+    {
+        head = new Node<T>(data);
+    }
+    else
+    {
+        Node<T>* current = this->head;
+        while (current->pNext != nullptr)
+        {
+            current = current->pNext;
+        }
+        current->pNext = new Node<T>(data);
+
+    }
+
+    Size++;
 }
 
-void test_foo(int a, function<void(int)> f)
+template<typename T>
+void List<T>::push_front(T data)
 {
-    f(a);
+    head = new Node<T>(data, head);  
+    Size++;  
+
 }
+
+template<typename T>
+void List<T>::insert(T data, int index)
+{
+    if(index == 0)
+    {
+        push_front(data);
+    }
+    else
+    {
+
+        Node<T> *previous = this->head;
+
+        for (size_t i = 0; i < index -1; i++)
+        {
+            previous = previous->pNext;
+        }
+        //Node<T>* newNode = new Node<T>(data, previous->pNext);
+       // previous->pNext = newNode; 
+        // oder:
+        previous->pNext = new Node<T>(data, previous->pNext); 
+
+        Size++; 
+        
+    }
+
+  
+}
+
+template<typename T>
+void List<T>::removeAt(int index)
+{
+    if (index == 0)
+    {
+        pop_front();
+    }
+    else
+    {
+        Node<T>* previous = this->head;
+
+        for (size_t i = 0; i < index - 1; i++)
+        {
+            previous = previous->pNext;
+        }
+        Node<T>* toDelete = previous->pNext;
+        previous->pNext = toDelete->pNext;
+        delete toDelete;
+        Size--;
+    }
+
+
+}
+
+template<typename T>
+void List<T>::pop_back()
+{
+    removeAt(Size-1);
+}
+
+template<typename T>
+void List<T>::clear()
+{
+    while (Size)
+    {
+        pop_front();
+    }
+}
+
+
+template<typename T>
+T& List<T>::operator[](const int index)
+{
+    int counter = 0;
+    Node<T>* current = this->head;
+
+    while (current != nullptr)
+    {
+        if (counter == index)
+        {
+            return current->data;
+        }
+        current = current->pNext;
+        counter++;
+
+    }
+}
+
 
 
 int main()
-{   
-    // Реализация односвязного списка c++ Часть 1 | Урок #133
+{
+    // #135 Реализация односвязного списка c++ Часть 3 | Урок #135
+    // void push_front(); void pop_back; void insert(T value, int index); void removeAt(int index);  
+
+
+
+
+
+    // #133 Реализация односвязного списка c++ Часть 1 | Урок #133 + часть 2
+    List<int> lst;
+    lst.push_back(55);
+    lst.push_back(11);
+    lst.push_back(22);
+    lst.push_back(4);
+    lst.push_back(7);
+    lst.insert(99, 1);
+
+    for (size_t i = 0; i < lst.GetSize(); i++)
+    {
+        cout << lst[i] << endl;
+    }
+
+    cout << endl << "Elemente in der Liste  " << lst.GetSize() << "  feuhre ich die Methode pop_front aus" << endl << endl;
+    //lst.pop_front();
+   // lst.clear();
+   // lst.push_front(5);
+   // lst.push_front(7);
+
+   // lst.push_back(5);
+   // lst.push_back(7);
+ 
+    lst.removeAt(3);
+    lst.pop_back();
+
+    for (size_t i = 0; i < lst.GetSize(); i++)
+    {
+        cout << lst[i] << endl;
+    }
+    cout << endl << "Elemente in der Liste " << lst.GetSize() << endl;
+
+
+
+
+    //int rec = 0;
+    /*cin >> rec;
+    for (size_t i = 0; i < rec; i++)
+    {
+        lst.push_back(rand() % 100);
+    }*/
+
+    /*for (size_t i = 0; i < lst.GetSize(); i++)
+    {
+        cout << lst[i] << endl;
+    }*/
+
+
+    return 0;
+
+
+
+
+
+    // **********#2 Итераторы STL | Библиотека стандартных шаблонов(stl) | Уроки | C++ | #2
+        // iterators werden verwendet mit verschiedene STL Container (sowie Vector, Array u s.w.)  
+        // vector <int> myVector = { 1, 9, 44, 422, 676, 78 };
+        //vector<int>::const_iterator it;    // das its Datentyp Iterator kann const sein
+       // vector<int>::iterator it = myVector.begin();    // das its Datentyp Iterator kann const sein
+                                                         // ****!!! Vector hat den Zugrif durch [], und das ist besser als Iterator, aber die andere Containers haben die nicht
+       // it = myVector.begin();
+
+        //cout << *(it+2) << endl; 
+       // *it = 111; 
+       // cout << *(it + 3) << endl;
+        // advance(it, 2);
+        //cout << *it << endl; 
+
+        /*for (vector<int>::const_iterator i = myVector.cbegin(); i != myVector.cend(); i++)   //c-begin und c-end haben const als Rückg abe
+        {
+            cout << *i << endl;
+
+        }*/
+
+        /* for (vector<int>::reverse_iterator i = myVector.rbegin(); i != myVector.rend(); i++)   //c-be
+         {
+             cout << *i << endl;
+
+         }*/
+         /* it = myVector.begin();
+          myVector.insert(it, 999);
+          for (vector<int>::iterator i = myVector.begin(); i != myVector.end(); i++)   //c-be
+          {
+              cout << *i << endl;
+
+          }
+
+          vector<int>::iterator itErase = myVector.begin();
+          advance(itErase, 2);
+
+          myVector.erase(itErase);
+          cout << "erase!!!" << endl;
+
+          for (vector<int>::iterator i = myVector.begin(); i != myVector.end(); i++)   //c-be
+          {
+              cout << *i << endl;
+
+          }*/
+
+          /*int arr[] = {2, 6, 9};
+
+          cout << arr[1] << endl;
+          cout << *(arr + 1) << endl; */
+
+
+
+
+          // #1 vector | Библиотека стандартных шаблонов(stl) | Уроки | C++ | #1
+
+             /* vector <int> myVector;
+              myVector.reserve(100);
+              myVector.push_back(6);
+              myVector.push_back(7);
+              myVector.push_back(8);
+              myVector.push_back(15);
+              myVector.push_back(81);
+              cout << myVector.size() << endl; */
+              //myVector.clear();
+               // myVector.pop_back();
+
+
+
+              /*cout << myVector.size() << endl;
+              myVector.shrink_to_fit();   // hier reduzieren wir die Arraygröße bis zum size
+              cout << myVector.capacity() << endl;
+
+              for (int i = 0; i < myVector.size(); i++)
+              {
+                  cout <<"myVector:" << myVector.at(i) << endl;
+              }*/
+
+
+
+
+              // array STL C++ | | Библиотека стандартных шаблонов (stl) | Уроки | C++ | #6   
+                  //array <int, 4> arr{1,5,7,6};
+                  //cout << arr.at(11) << endl;
+                  /*for (auto el : arr)
+                  {
+                      cout << el << endl;
+                  }*/
+                  // cout << arr[2] << endl; // es wird nicht geprüft
+                  // cout << arr.back() << endl; 
+
+
+
+             // 113 Что такое интерфейс в ООП. Интерфейс c++ пример. Изучение С++ для начинающих. Урок #113
+
+                 /*SimpleBicycle sb;
+                  SportBicycle spb;
+                  Human113 h;
+                  h.RideOn(sb);
+                  h.RideOn(spb);*/
+
+
+
+
+
+
+                  // 106 Чисто виртуальный деструктор c++.Наследование.Полиморфизм. virtual.override.Для начинающих #106
+
+
+
+                 // 105 Виртуальный деструктор класса C++.Что это такое.Наследование.Полиморфизм.Для начинающих #105
+                      /*A* bptr = new B;
+
+                      delete bptr;*/
+
+                      //  #132 Динамический массив и умные указатели.Изучение С++ для начинающих.Урок #132
+                          /*int SIZE;
+                          cin >> SIZE;
+                          // int* arr = new int[SIZE] {1, 6, 44, 9, 8};
+
+                          shared_ptr<int[]> ptr(new int[SIZE] {1, 6, 44, 9, 8});
+
+                          for (int i = 0; i < SIZE; i++)
+                          {
+                              ptr[i] = rand() % 10;
+                              cout << ptr[i] << endl;
+                          }*/
+
+
+
+
+
+                          // ***** #131 auto_ptr | unique_ptr | shared_ptr | Умные указатели. Изучение С++ для начинающих. Урок #131
+
+                              // auto_ptr ---- aktuell wird nicht verwendet!!!
+
+                              //SmartPointer<int>sp1 = new int(5);
+                              // SmartPointer<int>sp2 = new int(7);
+
+                              //std::auto_ptr<int> ap1(new int(5)); // ***in C++ 20 ist nicht mehr vorhanden
+                              //std::auto_ptr<int> ap2(ap1);
+
+                              //int* p = new int(5);
+
+
+                              //std:unique_ptr<int> up1(new int(5)); // in C++ können ein Zeiger auf anderen nicht zuweisen.
+                              //std::unique_ptr<int> up2(new int (7));
+
+                              // up2 = move(up1); // nachdem wird up leer!
+                              //up2.swap(up1);  // wir tauschen die Zeiger  up2 = 5, up1 ist leer
+                              //up2.reset();
+
+                              //unique_ptr<int> ptest(p);
+
+                             // ptest.release();
+
+                              //cout << up1.get() << endl; 
+                              //cout << up2.get() << endl; 
+
+                              // shared
+                              //shared_ptr<int> p1(new int(5)); // der wichtigste Smart Pointer in C++!!!!
+                             // shared_ptr<int> p2(p1);
+
+                              // return 0;
+
+                              // SmartPointer<int>sp2 = sp1;
+
+
+                              /*cout << *sp1 << endl;
+                              cout << sp2.get() << endl;
+                              cout << sp1.get() << endl;*/
+
+
+
+
+                              // 130 Умные указатели. Smart pointers. Изучение С++ для начинающих. Урок #130  
+                                  // nach der Ausführung wird das Objekt automatisch gelöscht
+                                 /* SmartPointer<int> pointer = new int(7);
+
+                                  *pointer = 1665454;
+
+                                  cout << *pointer << endl;*/
+
+
+
+
+
+                                  // Многопоточность | Потоки | thread | Многопоточное прfограммирование | Уроки | C++ #1
+
+
+                                  // Лямбда-выражения | Лямбда функции | Анонимные функции | Изучение С++ для начинающих. Урок #143
+
+
+                                  // std::function | Полиморфная обёртка функции | Изучение С++ для начинающих. Урок #142
+
+
+                                  // 139 Многофайловый проект | Изучение С++ для начинающих. Урок #139
+                                  // Methoden schreiben wir in der .cpp Datei
+
+
+                                  // 136 Ключевое слово auto | Изучение С++ для начинающих. Урок #136
+                                      /*auto a = 10;
+                                      auto b = 32.65;
+                                      auto c = "string";*/
+
+                                      // ***statt constexpr  std::array<uint32_t, 256> crc32k9_init_table() 
+                                      // können wir einfach auto schreiben!
+
+
+
+
+    /*char cmut[] = "Hello World!";
+
+    int arri[3] = { 7,1,2 };
+    int* ptr;
+    ptr = arri;
+    cout << arri << endl;*/
+
+
+
 
 
     // Многопоточность | Потоки | thread | Многопоточное программирование | Уроки | C++ #1
+    
+    //thread th(DoWork);
+   // thread th2(DoWork);
+    
 
+
+
+    //cout << "start main" << endl;   
+    //this_thread::sleep_for(chrono::milliseconds(500));
+    // cout << this_thread::get_id() << endl;
+
+   /*for (size_t i = 0; i < 10; i++)
+    {
+        cout << "ID thread = " << this_thread::get_id() << "\tmain" << i << endl;
+        this_thread::sleep_for(chrono::milliseconds(500));
+    }
+
+    
+
+    th.join();
+    th2.join();
+    cout << "end main" << endl;
+    return 0; */
 
     // Лямбда-выражения | Лямбда функции | Анонимные функции | Изучение С++ для начинающих. Урок #143
-    int val;
+    //int val;
 
     /*[&val](int a)
         {
@@ -626,13 +1239,14 @@ int main()
 
     // std::function | Полиморфная обёртка функции | Изучение С++ для начинающих. Урок #142
     // das ist Funktionzeiger aber nur im OOP
-    function<void(int)> f;
+    // 
+   // function<void(int)> f;
    /* f = foo;
     f(7);
     f = foo1;
     f(7);*/
-    test_foo(7, foo);
-    test_foo(7, foo1);
+    // test_foo(7, foo);
+    // test_foo(7, foo1);
 
 
 
